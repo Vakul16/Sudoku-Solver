@@ -1,122 +1,137 @@
-var initArray=[[0,0,0,2,6,0,7,0,1],[6,8,0,0,7,0,0,9,0],[1,9,0,0,0,4,5,0,0],[8,2,0,1,0,0,0,4,0],
+var board=[[0,0,0,2,6,0,7,0,1],[6,8,0,0,7,0,0,9,0],[1,9,0,0,0,4,5,0,0],[8,2,0,1,0,0,0,4,0],
 [0,0,4,6,0,2,9,0,0],[0,5,0,0,0,3,0,2,8],[0,0,9,3,0,0,0,7,4],[0,4,0,0,5,0,0,3,6],[7,0,3,0,1,8,0,0,0]];
 
-var outputArray=initArray;
-//console.log(initArray);
+var saveEmptyPositions = function(board) {
+  // Create an array to save the positions
+  var emptyPositions = [];
 
-/* function to return 0's indexs*/
-
-function getIndex(arr){
-    var dumArr= new Array();
-for(let i=0;i<arr.length;i++){  
-    for(j=0;j<9;j++){
-        if(arr[i][j]==0){
-            dumArr.push([i,j]);
-        }
+  // Check every square in the puzzle for a zero
+  for(var i = 0; i < board.length; i++) {
+    for(var j = 0; j < board[i].length; j++) {
+      // If a zero is found, so that position
+      if(board[i][j] === 0) {
+        emptyPositions.push([i, j]);
+      }
     }
-}
-return dumArr;
-}
-//console.log(getIndex(initArray));
-var solveArr=getIndex(initArray) // solve Array contains empty/0's indexs
+  }
 
-/* to check rows if element fits or not*/
-function checkRow(initArray,row,value){
-let flag=1;
-for (let i=0;i<9;i++){
-if(initArray[row][i]==value){
-    flag=0;    // match found in row should return false;
-}
-}
-return flag;
-} 
+  // Return the positions
+  return emptyPositions;
+};
 
-function checkColumn(initArray,col,value){
-    let flag=1;
-    for (let i=0;i<9;i++){
-    if(initArray[i][col]==value){
-        flag=0;    // match found in column should return false;
+var checkRow = function(board, row, value) {
+  // Iterate through every value in the row
+  for(var i = 0; i < board[row].length; i++) {
+    // If a match is found, return false
+    if(board[row][i] === value) {
+      return false;
     }
+  }
+  // If no match was found, return true
+  return true;
+};
+
+var checkColumn = function(board, column, value) {
+  // Iterate through each value in the column
+  for(var i = 0; i < board.length; i++) {
+    // If a match is found, return false
+    if(board[i][column] === value) {
+      return false;
     }
-    return flag;
-    } 
-function checkSquare(initArray,row,column,value){
-// Save the upper left corner
-        var columnCorner = 0,
-            rowCorner = 0,
-            squareSize = 3;
-        // Find the left-most column
-        while(column >= columnCorner + squareSize) {
-            columnCorner += squareSize;
-        }
-        
-        // Find the upper-most row
-        while(row >= rowCorner + squareSize) {
-            rowCorner += squareSize;
-        }
-        
-        // Iterate through each row
-        for(var i = rowCorner; i < rowCorner + squareSize; i++) {
-            // Iterate through each column
-            for(var j = columnCorner; j < columnCorner + squareSize; j++) {
-            // Return false is a match is found
-            if(initArray[i][j] === value) {        
-                return false;
-            }
-            }
-        }
-        // If no match was found, return true
-        return true;
-}
-       
-    
+  }
+  // If no match was found, return true
+  return true;
+};
 
-// checking for the values in row and column and returning respective Flag arrays.
-var rowFlag= new Array();
-var colFlag= new Array();
-var squareFlag= new Array();
-for(var i=0;i<solveArr.length;i++){
-let row=solveArr[i][0];
-let column=solveArr[i][1];
-let dumrowFlag= new Array();
-let dumcolFlag= new Array();
-let dumsquareFlag= new Array();
+var check3x3Square = function(board, column, row, value) {
+  // Save the upper left corner
+  var columnCorner = 0,
+      rowCorner = 0,
+      squareSize = 3;
 
-for(var j=1;j<=9;j++){
-    if(checkRow(initArray,row,j)==1)
-    dumrowFlag.push(1);
-    else
-    dumrowFlag.push(0);
+  // Find the left-most column
+  while(column >= columnCorner + squareSize) {
+    columnCorner += squareSize;
+  }
 
-    if(checkColumn(initArray,column,j)==1)
-    dumcolFlag.push(1);
-    else
-    dumcolFlag.push(0);
-    
-    if(checkSquare(initArray,row,column,j))
-    dumsquareFlag.push(1);
-    else
-    dumsquareFlag.push(0);
-    }    
-rowFlag.push(dumrowFlag);
-colFlag.push(dumcolFlag);
-squareFlag.push(dumsquareFlag);
-}
+  // Find the upper-most row
+  while(row >= rowCorner + squareSize) {
+    rowCorner += squareSize;
+  }
 
-// finding the correct values and inserting them in the initArray//
-
-    for(let i=0;i<rowFlag.length;i++){
-        for(let j=0;j<9;j++){
-            if(rowFlag[i][j]==1&&colFlag[i][j]==1&&squareFlag[i][j]==1)
-            {
-                let fvalue=j+1;
-                outputArray[solveArr[i][0]][solveArr[i][1]]=fvalue;
-            }
-        }
-
+  // Iterate through each row
+  for(var i = rowCorner; i < rowCorner + squareSize; i++) {
+    // Iterate through each column
+    for(var j = columnCorner; j < columnCorner + squareSize; j++) {
+      // Return false is a match is found
+      if(board[i][j] === value) {        
+        return false;
+      }
     }
+  }
+  // If no match was found, return true
+  return true;
+};
 
-console.log(rowFlag);
-console.log(colFlag);
-console.log(squareFlag);
-//console.log(outputArray);
+var checkValue = function(board, column, row, value) {
+  if(checkRow(board, row, value) &&
+    checkColumn(board, column, value) &&
+    check3x3Square(board, column, row, value)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+var solvePuzzle = function(board, emptyPositions) {
+  // Variables to track our position in the solver
+  var limit = 9,
+      i, row, column, value, found;
+  for(i = 0; i < emptyPositions.length;) {
+    row = emptyPositions[i][0];
+    column = emptyPositions[i][1];
+    // Try the next value
+    value = board[row][column] + 1;
+    // Was a valid number found?
+    found = false;
+    // Keep trying new values until either the limit
+    // was reached or a valid value was found
+    while(!found && value <= limit) {
+      // If a valid value is found, marked found to true,
+      // set the position to the value, and move to the
+      // next position
+      if(checkValue(board, column, row, value)) {
+        found = true;
+        board[row][column] = value;
+        i++;
+      } 
+      // Otherwise, try the next value
+      else {
+        value++;
+      }
+    }
+    // If no valid value was found and the limit was
+    // reached, move back to the previous position
+    if(!found) {
+      board[row][column] = 0;
+      i--;
+    }
+  }
+
+  // A solution was found! Log it
+ /* board.forEach(function(row) {
+    console.log(row.join());
+  });*/
+
+  // return the solution
+  return board;
+};
+
+var emptyPositions = saveEmptyPositions(board);
+console.log(solvePuzzle(board, emptyPositions));
+
+
+
+
+
+
