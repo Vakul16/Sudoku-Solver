@@ -1,7 +1,7 @@
 //var board=[[0,0,0,2,6,0,7,0,1],[6,8,0,0,7,0,0,9,0],[1,9,0,0,0,4,5,0,0],[8,2,0,1,0,0,0,4,0],
 //[0,0,4,6,0,2,9,0,0],[0,5,0,0,0,3,0,2,8],[0,0,9,3,0,0,0,7,4],[0,4,0,0,5,0,0,3,6],[7,0,3,0,1,8,0,0,0]];
 
-var board=[[0,0,5,0,0,0,0,8,4],
+/*var board=[[0,0,5,0,0,0,0,8,4],
 [0,4,0,8,0,0,2,5,0],
 [0,0,0,5,0,0,6,0,3],
 [3,0,0,0,0,4,0,9,0],
@@ -9,7 +9,18 @@ var board=[[0,0,5,0,0,0,0,8,4],
 [0,0,0,0,0,0,0,4,5],
 [0,0,0,4,0,0,0,7,0],
 [0,8,0,7,0,0,0,2,0],
-[0,0,3,0,0,0,5,0,0]];
+[0,0,3,0,0,0,5,0,0]];*/
+
+var board=[[8,0,0,0,0,0,0,0,0],
+[0,0,3,6,0,0,0,0,0],
+[0,7,0,0,9,0,2,0,0],
+[0,5,0,0,0,7,0,0,0],
+[0,0,0,0,4,5,7,0,0],
+[0,0,0,1,0,0,0,3,0],
+[0,0,1,0,0,0,0,6,8],
+[0,0,8,5,0,0,0,1,0],
+[0,9,0,0,0,0,4,0,0]];
+
 
 var saveEmptyPositions = function(board) {
   // Create an array to save the positions
@@ -26,6 +37,7 @@ var saveEmptyPositions = function(board) {
   }
 
   // Return the positions
+  //console.log(emptyPositions);
   return emptyPositions;
 };
 
@@ -101,7 +113,7 @@ var solvePuzzle = function(board, emptyPositions) {
     row = emptyPositions[i][0];
     column = emptyPositions[i][1];
     // Try the next value
-    value = board[row][column] + 1;
+    value = board[row][column] + 1;// already 0 will be there in board so starting with 1.
     // Was a valid number found?
     found = false;
     // Keep trying new values until either the limit
@@ -114,6 +126,7 @@ var solvePuzzle = function(board, emptyPositions) {
         found = true;
         board[row][column] = value;
         i++;
+        //console.log(value);
       } 
       // Otherwise, try the next value
       else {
@@ -134,10 +147,5 @@ var solvePuzzle = function(board, emptyPositions) {
 };
 
 var emptyPositions = saveEmptyPositions(board);
+console.log(emptyPositions);
 console.log(solvePuzzle(board, emptyPositions));
-
-
-
-
-
-
