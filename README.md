@@ -1,2 +1,5 @@
 # MILESTONE1
-# SUDOKU
+## SUDOKU
+## Technologies Used
+
+Javascript
