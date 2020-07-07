@@ -1,5 +1,5 @@
-# MILESTONE1
-## SUDOKU
-## Technologies Used
+# Milestone1
+## Sudoku
+### Technologies Used
 
 Javascript
